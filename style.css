@@ -4,17 +4,17 @@
     font-family: Arial;
 }
 
-.graph caption {
+table.graph caption {
     text-align: left;
 }
 
-.graph caption span, .graph caption button {
+table.graph caption span, table.graph caption button {
     float: right;
 }
 
-.graph td {
+table.graph td {
     width: 150px;
 }
-.graph td:first-child {
+table.graph td:first-child {
     font-weight: bold;
 }
