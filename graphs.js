@@ -45,6 +45,11 @@
         return this.label;
     };
 
+    Series.color = function (index) {
+        var colors = ['#ED6E37', '#259E01', '#15A0C8'];
+        return colors[index % 3];
+    };
+
 
     /**
      * Extracts data from the element.
@@ -98,13 +103,13 @@
         svg.setAttributeNS(null, 'width', width + margin);
 
         // Draw data points and lines.
-        data.series.forEach(function (series) {
+        data.series.forEach(function (series, seriesIndex) {
             var previousPoint, circles = [];
-            series.data.forEach(function (number, index) {
+            series.data.forEach(function (number, dataPointIndex) {
                 var circle = document.createElementNS(SVG_NS, 'circle'),
                     line = document.createElementNS(SVG_NS, 'line'),
                     point = {
-                        x: 60 * (index + 0.5),
+                        x: 60 * (dataPointIndex + 0.5),
                         y: height - height * number / data.max
                     };
 
@@ -117,7 +122,7 @@
                 line.setAttributeNS(null, 'x2', point.x + margin);
                 line.setAttributeNS(null, 'y1', previousPoint.y + margin);
                 line.setAttributeNS(null, 'y2', point.y + margin);
-                line.setAttributeNS(null, 'stroke', '#15A0C8');
+                line.setAttributeNS(null, 'stroke', Series.color(seriesIndex));
                 line.setAttributeNS(null, 'stroke-width', 4);
 
                 svg.appendChild(line);
@@ -125,7 +130,7 @@
                 circle.setAttributeNS(null, 'cx', point.x + margin);
                 circle.setAttributeNS(null, 'cy', point.y + margin);
                 circle.setAttributeNS(null, 'r',  5);
-                circle.setAttributeNS(null, 'fill', '#15A0C8');
+                circle.setAttributeNS(null, 'fill', Series.color(seriesIndex));
                 circle.setAttributeNS(null, 'stroke', 'white');
                 circle.setAttributeNS(null, 'stroke-width', 3);
                 circles.push(circle);
