@@ -1,0 +1,20 @@
+
+.graph {
+    border: 1px solid #80B3D5;
+    font-family: Arial;
+}
+
+.graph caption {
+    text-align: left;
+}
+
+.graph caption span, .graph caption button {
+    float: right;
+}
+
+.graph td {
+    width: 150px;
+}
+.graph td:first-child {
+    font-weight: bold;
+}
