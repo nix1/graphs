@@ -95,6 +95,26 @@
         return circle;
     }
 
+
+    /**
+     * Simplifies creation of SVG rectangles.
+     * @param {object} point
+     * @param {string} color
+     * @param {number} offset
+     * @return {SVGRectElement}
+     * @constructor
+     */
+    function Rectangle(point, color, offset) {
+        var rect = document.createElementNS(SVG_NS, 'rect');
+
+        rect.setAttributeNS(null, 'x', point.x + MARGIN + offset * 7);
+        rect.setAttributeNS(null, 'y', point.y + MARGIN);
+        rect.setAttributeNS(null, 'width',  5);
+        rect.setAttributeNS(null, 'height',  100 - point.y);
+        rect.setAttributeNS(null, 'fill', color);
+        return rect;
+    }
+
     function BackgroundPolygon() {}
     BackgroundPolygon.prototype = [];
     /**
@@ -186,6 +206,7 @@
         series.forEach(function (series) {
             max = Math.max(max, series.max);
         });
+        max = Math.pow(10, Math.floor(max).toString().length); // use proper scale
         return {labels: labels, series: series, max: max};
     }
 
@@ -211,11 +232,12 @@
             svg = document.createElementNS(SVG_NS, 'svg'),
             graphElements = [],
             backgroundPoly = new BackgroundPolygon(),
+            isBarChart = graph.classList.contains('bar'),
             height = 100,
             width = 400;
 
         // Set svg size to graph size plus some margin.
-        svg.setAttributeNS(null, 'height', height + MARGIN);
+        svg.setAttributeNS(null, 'height', height + 2*MARGIN);
         svg.setAttributeNS(null, 'width', width + MARGIN);
 
         // Draw data points and lines.
@@ -233,13 +255,19 @@
                         x: 0, y: height - (height - point.y) / 2
                     };
                     // Handle the leftmost values for the polygon.
-                    backgroundPoly.use(previousPoint);
+                    if (!isBarChart) {
+                        backgroundPoly.use(previousPoint);
+                    }
                 }
 
                 // Handle the current value for the polygon.
-                backgroundPoly.use(point);
-                lines.push(new Line(previousPoint, point, Series.color(seriesIndex)));
-                circles.push(new Circle(point, Series.color(seriesIndex)));
+                if (isBarChart) {
+                    graphElements.push(new Rectangle(point, Series.color(seriesIndex), seriesIndex));
+                } else {
+                    backgroundPoly.use(point);
+                    lines.push(new Line(previousPoint, point, Series.color(seriesIndex)));
+                    circles.push(new Circle(point, Series.color(seriesIndex)));
+                }
                 previousPoint = point;
             }); // end foreach data point
 
@@ -254,9 +282,11 @@
 
 
         // Draw the background.
-        svg.appendChild(backgroundPoly.draw());
+        if (!isBarChart) {
+            svg.appendChild(backgroundPoly.draw());
+        }
 
-        // Add lines and circles into the svg.
+        // Add graph elements into the svg.
         graphElements.forEach(function (element) {
             svg.appendChild(element);
         });
