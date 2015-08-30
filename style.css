@@ -2,8 +2,10 @@
 .graph {
     border: 1px solid #80B3D5;
     font-family: Arial;
+    margin: 20px;
 }
 
+/* Legacy styles */
 table.graph caption {
     text-align: left;
 }
@@ -17,4 +19,69 @@ table.graph td {
 }
 table.graph td:first-child {
     font-weight: bold;
+}
+
+/* SVG styles */
+div.graph {
+    width: 600px;
+    position: relative;
+    color: #05415B;
+}
+
+div.graph button, div.graph span {
+    position: absolute;
+    right: 20px;
+    display: block;
+}
+
+div.graph span {
+    top: 80px;
+}
+div.graph span b {
+    right: 0;
+    position: absolute;
+    top: -25px;
+    font-size: 18pt;
+}
+
+div.graph button {
+    border: 1px solid #80B3D5;
+    background: linear-gradient(#1CB8E4, #046C8A);
+    border-radius: 7px;
+    color: white;
+    font-size: 12pt;
+    top: 140px;
+}
+
+div.graph h1 {
+    background: linear-gradient(#DDF0FC, #D8EDFB);
+    margin: 0;
+    padding: 5px;
+    padding-left: 40px;
+    font-size: 12pt;
+    border-bottom: 1px solid #80B3D5;
+}
+
+div.graph .icon {
+    position: absolute;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    left: 5px;
+    top: -10px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #80B3D5;
+    background: linear-gradient(white, #DBF0FB);
+    border-radius: 7px;
+}
+div.graph .icon div {
+    margin: 5px;
+    background-color: #05415B;
+    color: white;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    transform: rotate(90deg);
 }

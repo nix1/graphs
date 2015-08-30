@@ -189,6 +189,18 @@
         return {labels: labels, series: series, max: max};
     }
 
+    function getHeaderContent(caption) {
+        var icon = '',
+            captionHTML = caption.innerHTML;
+
+        if (captionHTML.indexOf('Revenue') !== -1) {
+            icon = '$';
+        } else {
+            icon = '<div>➡</div>';
+        }
+
+        return '<div class="icon">' + icon + '</div>' + captionHTML;
+    }
     /**
      * Transforms plain HTML into target markup.
      * @param {HTMLTableElement} graph Graph element.
@@ -251,6 +263,11 @@
 
         // Set the container class.
         container.className = 'graph';
+
+        container.appendChild(document.createElement('h1'));
+        container.appendChild(graph.querySelector('span'));
+        container.appendChild(graph.querySelector('button'));
+        container.firstChild.innerHTML = getHeaderContent(graph.querySelector('caption'));
 
         // Add the SVG into the container.
         container.appendChild(svg);
