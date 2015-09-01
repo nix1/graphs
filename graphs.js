@@ -310,6 +310,17 @@
             svg.appendChild(backgroundPoly.draw());
         }
 
+        // Show the legend for data points.
+        data.labels.forEach(function (label, i) {
+            var x = 60 * (i + 0.5),
+                y = height;
+            // Label
+            svg.appendChild(new Text({x: x - 2, y: y + 15 }, label));
+            // Show the exact point
+            svg.appendChild(new Line({ x: x, y: y}, { x: x, y: y + 15}, 'black', 1));
+        });
+
+
         // Add graph elements into the svg.
         graphElements.forEach(function (element) {
             svg.appendChild(element);
