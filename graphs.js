@@ -326,6 +326,9 @@
             svg.appendChild(element);
         });
 
+        // Show the summary.
+        svg.appendChild(new Text({ x: 60*5, y: -10 }, graph.getAttribute('summary')));
+
         // Set the container class.
         container.className = 'graph';
 
