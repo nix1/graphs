@@ -85,3 +85,14 @@ div.graph .icon div {
     line-height: 20px;
     transform: rotate(90deg);
 }
+div.graph ul {
+    list-style-type: none;
+}
+div.graph li {
+    display: inline;
+    margin-right: 10px;
+}
+div.graph li span {
+    position: static;
+    display: inline;
+}

@@ -7,7 +7,7 @@
     'use strict';
 
     var SVG_NS = 'http://www.w3.org/2000/svg',
-        MARGIN = 50;
+        MARGIN = 30;
 
     /**
      * Helper for looping through collections.
@@ -64,7 +64,7 @@
      * @return {SVGLineElement}
      * @constructor
      */
-    function Line(startPoint, endPoint, color) {
+    function Line(startPoint, endPoint, color, width) {
        var line = document.createElementNS(SVG_NS, 'line');
 
        line.setAttributeNS(null, 'x1', startPoint.x + MARGIN);
@@ -72,8 +72,27 @@
        line.setAttributeNS(null, 'y1', startPoint.y + MARGIN);
        line.setAttributeNS(null, 'y2', endPoint.y + MARGIN);
        line.setAttributeNS(null, 'stroke', color);
-       line.setAttributeNS(null, 'stroke-width', 4);
+       line.setAttributeNS(null, 'stroke-width', width || 4);
        return line;
+    }
+
+    /**
+     * Simplifies creation of SVG text.
+     * @param {object} point
+     * @param endPoint
+     * @param color
+     * @return {SVGTextElement}
+     * @constructor
+     */
+    function Text(point, content) {
+        var text = document.createElementNS(SVG_NS, 'text');
+
+        text.setAttributeNS(null, 'x', point.x + MARGIN);
+        text.setAttributeNS(null, 'y', point.y + MARGIN);
+        text.setAttributeNS(null, 'font-size', 10);
+        text.setAttributeNS(null, 'text-anchor', 'end');
+        text.textContent = content;
+        return text;
     }
 
     /**
@@ -280,6 +299,11 @@
             });
         }); // end foreach series
 
+        // Draw the axis
+        for (var i = 0; i < 3; i++) {
+            svg.appendChild(new Line({x: 0, y: i*height/2}, {x: 60*5, y: i*height/2}, 'black', 1));
+            svg.appendChild(new Text({x: -2, y: i*height/2 + 3}, i*data.max/2));
+        }
 
         // Draw the background.
         if (!isBarChart) {
@@ -301,6 +325,19 @@
 
         // Add the SVG into the container.
         container.appendChild(svg);
+
+        // Show the legend for series.
+        var ul = document.createElement('ul');
+        data.series.forEach(function (series, index) {
+            var li = document.createElement('li'),
+                disc = document.createElement('span');
+            disc.innerText = '● ';
+            disc.style.color = Series.color(index);
+            li.appendChild(disc);
+            li.appendChild(document.createTextNode(series.label));
+            ul.appendChild(li);
+        });
+        container.appendChild(ul);
 
         // Insert the new container just before the old element.
         graph.parentNode.insertBefore(container, graph);
